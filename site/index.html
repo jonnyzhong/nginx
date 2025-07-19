@@ -1,37 +1,27 @@
 <!DOCTYPE html>
+<html>
+<head>
+  <title>Google Drive OAuth Example</title>
+</head>
+<body>
+  <button id="login">Sign in with Google</button>
+  <script>
+    const clientId = '1069901384921-rk00n0tf0g6fpaf3hbp6urptqetobstm.apps.googleusercontent.com';
+    const redirectUri = 'http://localhost:8081';
+    const scope = 'https://www.googleapis.com/auth/drive.file';
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>NGINX on Railway</title>
-    <meta name="description" content="Choo Choo!" />
-
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <link rel="stylesheet" href="/styles.css?v=1.0" />
-  </head>
-
-  <body>
-    <main>
-      <img
-        src="https://railway.app/brand/logo-light.svg"
-        alt="Railway logo"
-        class="logo"
-      />
-
-      <h1>NGINX on Railway</h1>
-
-      <p>
-        Choo Choo! This is an example of an NGINX static site running on
-        Railway.
-        <a
-          href="https://github.com/railwayapp/starters/tree/master/examples/nginx"
-          >View source</a
-        >.
-      </p>
-    </main>
-
-    <script src="/script.js"></script>
-  </body>
+    document.getElementById("login").onclick = function() {
+      const state = Math.random().toString(36).substring(7);
+      localStorage.setItem('oauth_state', state);
+      const url = `https://accounts.google.com/o/oauth2/v2/auth?` +
+        `client_id=${clientId}` +
+        `&redirect_uri=${encodeURIComponent(redirectUri)}` +
+        `&response_type=token` +
+        `&scope=${encodeURIComponent(scope)}` +
+        `&state=${state}`;
+      window.location = url;
+    };
+    // After redirect, parse access_token from URL fragment.
+  </script>
+</body>
 </html>
